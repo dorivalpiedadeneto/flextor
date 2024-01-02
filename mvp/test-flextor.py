@@ -201,6 +201,26 @@ class testLine(unittest.TestCase):
                 l.rotate(rp, 10.0)
                 ang += 10.0
 
+    def testProjection(self):
+        l = Line(Point(-1.0, 0.0), Point(1.0, 0.0))
+        p = Point(-2.0, 0.0)
+        qsi = -2.0
+        while p.z < 2.0:
+            self.assertAlmostEqual(l.projection(p), qsi)
+            p.move(0.1, 0.0)
+            qsi += 0.1
+        p.move(0.0, 1.0)
+        while p.z < 2.0:
+            self.assertAlmostEqual(l.projection(p), qsi)
+            p.move(-0.1, 0.0)
+            qsi -= 0.1
+        l.move(-10.0, 2.0)
+        p.move(-10.0, 0.0)
+        while p.z < 4.0:
+            self.assertAlmostEqual(l.projection(p), qsi)
+            p.move(0.1, 0.0)
+            qsi += 0.1
+
 
             
 
