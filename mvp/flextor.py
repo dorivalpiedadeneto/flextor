@@ -81,7 +81,7 @@ class Line(object):
         zi, yi = self.pi.coord()
         zj, yj = self.pj.coord()
         l = sqrt((zj - zi) ** 2 + (yj - yi) ** 2)
-        return ((zj - zi) / l, (yj -yi) / l)
+        return ((zj - zi) / l, (yj - yi) / l)
 
     def unit_normal(self):
         tz, ty = self.unit_tangent()
@@ -147,6 +147,11 @@ class Line(object):
         zp, yp = other_point.coord()
         d = sqrt((zp - z) ** 2 + (yp - y) ** 2)
         return d
+
+    def bounding_box(self):
+        zi, yi = self.pi.coord()
+        zj, yj = self.pj.coord()
+        return((max(zi, zj),max(yi, yj),(min(zi, zj), min(yi, yj))))
 
 
 def test_point_dev():
