@@ -1,6 +1,7 @@
 import unittest
 
 from flextor import Point
+from flextor import Line
 
 class TestPoint(unittest.TestCase):
 
@@ -9,6 +10,7 @@ class TestPoint(unittest.TestCase):
         for pt in pts:
             z, y = pt
             p = Point(z, y)
+            self.assertIsInstance(p, Point)
             self.assertAlmostEqual(z, p.z)
             self.assertAlmostEqual(y, p.y)
     
@@ -107,8 +109,100 @@ class TestPoint(unittest.TestCase):
                     ang += 10.0
                     p_.rotate(p, ang)
 
+class testLine(unittest.TestCase):
+
+    def testConstructor(self):
+        lns = (((0.0, 0.0), (1.0, 1.0)),
+               ((1.0, 1.0), (1.0, -1.0)),
+               ((1.0, -1.0), (-1.0, 1.0)),
+               ((-1.0, 1.0), (0.0, 0.0)))
+        for ln_ in lns:
+            ((zi, yi),(zj, yj)) = ln_
+            pi = Point(zi, yi)
+            pj = Point(zj, yj)
+            l = Line(pi, pj)
+            self.assertIsInstance(l.pi, Point)
+            self.assertIsInstance(l.pj, Point)
+            self.assertIsInstance(l, Line)
+            self.assertIs(l.pi, pi)
+            self.assertIs(l.pj, pj)
+        
+    def testString(self):
+        _str = "line from {} to {}"
+        lns = (((0.0, 0.0), (1.0321, 1.0213)),
+               ((1.04143, 1.0214), (1.03213, -1.012)),
+               ((1.0321, -1.0123), (-1.0, 1.0)),
+               ((-1.0321, 1.0321), (0.0, 0.0)))
+        for ln_ in lns:
+            ((zi, yi),(zj, yj)) = ln_
+            pi = Point(zi, yi)
+            pj = Point(zj, yj)
+            l = Line(pi, pj)
+            self.assertEqual(_str.format(pi, pj), str(l))
+
+    def testLength(self):
+        sqrt2 = 2.0 ** 0.5
+        lns = (((0.0,0.0),(0.0, 1.0)),
+               ((0.0,0.0),(2.0, 0.0)),
+               ((0.0,0.0),(0.0,-3.0)),
+               ((0.0,0.0),(-2.0, 0.0)),
+               ((0.0,0.0),(2.0, 2.0)),
+               ((0.0,0.0),(-3.0, -3.0)))
+        ls = (1.0, 2.0, 3.0, 2.0, 2.0*sqrt2, 3.0*sqrt2)
+        rp = Point(0.0, 0.0)
+        for ln_,l_ in zip(lns,ls):
+            ((zi, yi),(zj, yj)) = ln_
+            pi = Point(zi, yi)
+            pj = Point(zj, yj)
+            l = Line(pi, pj)
+            self.assertAlmostEqual(l.length(), l_)
+            ds = ((1.0, 1.0),(-2.0, 0.0),(0.0, -2.0),(0.0, 3.0))
+            for dz, dy in ds:
+                l.move(dz, dy)
+                rp.move(dz, dy)
+                self.assertAlmostEqual(l.length(), l_)
+                ang = 0.0
+                for _ in range(36):
+                    self.assertAlmostEqual(l.length(), l_)
+                    l.rotate(rp, 10.0)
+                    ang += 10.0
+
+    def testUnitTangent(self):
+        from math import radians, sin, cos
+        l = Line(Point(0.0, 0.0), Point(3.0, 0.0))
+        rp = Point(0.0, 0.0)
+        ds = ((1.0, 1.0),(-2.0, 0.0), (0.0, -2.0), (2.0, 0.0))
+        for dz, dy in ds:
+            l.move(dz, dy)
+            rp.move(dz, dy)
+            ang = 0.0
+            for _ in range(36):
+                tz, ty = l.unit_tangent()
+                #print(ang, tz, cos(radians(-ang)), ty, sin(radians(-ang)))
+                self.assertAlmostEqual(tz, cos(radians(-ang)))
+                self.assertAlmostEqual(ty, sin(radians(-ang)))
+                ang += 10.0
+                l.rotate(rp, 10.0)
+
+    def testUnitNormal(self):
+        from math import radians, sin, cos
+        l = Line(Point(0.0, 0.0), Point(3.0, 0.0))
+        rp = Point(0.0, 0.0)
+        ds = ((1.0, 1.0),(-2.0, 0.0), (0.0, -2.0), (2.0, 0.0))
+        for dz, dy in ds:
+            l.move(dz, dy)
+            rp.move(dz, dy)
+            ang = 0.0
+            for _ in range(36):
+                nz, ny = l.unit_normal()
+                #print(ang, tz, cos(radians(-ang)), ty, sin(radians(-ang)))
+                self.assertAlmostEqual(nz, cos(radians(-ang+90.0)))
+                self.assertAlmostEqual(ny, sin(radians(-ang+90.0)))
+                l.rotate(rp, 10.0)
+                ang += 10.0
 
 
+            
 
 
 
