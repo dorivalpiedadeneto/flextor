@@ -154,47 +154,5 @@ class Line(object):
         return((max(zi, zj),max(yi, yj),(min(zi, zj), min(yi, yj))))
 
 
-def test_point_dev():
-    # Only during first development stage
-    p = Point(1.0, -2.0)
-    o = Point(1.0, -2.0)
-    print(p)
-    print(o)
-    print("Is 'o' equal to point 'p'? {}".format(o == p))
-    o.y += 1.0e-7; o.z -= 1.0e-7
-    print("And now? {}".format(o == p))
-    o.y += 0.1
-    print("Is it false now? {}".format(o == p))
-    o.y = p.y
-    Point.tolerance = 1.0e-9
-    print("Changed the tolerance, but z still greater -> {}".format(o==p))
-    o.z = p.z
-    print("Now they are equal: {}".format(o==p))
-    # test move, rotate and distance
-    o.move(-1.0, 2.0)
-    print(o)
-    p.rotate(o, 90.0)
-    print(p)
-    p.rotate(o, 90.0)
-    print(p)
-    p.rotate(o, 90.0)
-    print(p)
-    print('Is distance right? -> {}'.format(abs(p.distance(o) - sqrt(5)) < Point.tolerance))
-
-def test_line_dev():
-    # Only during first development stage
-    p = Point(1.5, 1.5)
-    l = Line(Point(1.0, 1.0), Point(1.0, 2.0))
-    print(p)
-    print(l)
-    print(l.unit_tangent())
-    print(l.unit_normal())
-    print(l.projection(p))
-    print(l.coordinate(l.projection(p)))
-
-
 if __name__ == "__main__":
-    test_point_dev()
-    test_line_dev()
-    #Just superficial tests... next step: write a file with more complete
-    #tests
+    pass
