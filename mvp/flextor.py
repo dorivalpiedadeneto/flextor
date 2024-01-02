@@ -72,6 +72,11 @@ class Line(object):
         self.pi.rotate(rpoint, angle, deg)
         self.pj.rotate(rpoint, angle, deg)
 
+    def length(self):
+        zi, yi = self.pi.coord()
+        zj, yj = self.pj.coord()
+        return sqrt((zj - zi) ** 2 + (yj - yi) ** 2)
+
     def unit_tangent(self):
         zi, yi = self.pi.coord()
         zj, yj = self.pj.coord()
