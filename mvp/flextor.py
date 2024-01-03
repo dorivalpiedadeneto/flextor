@@ -172,13 +172,28 @@ class Vertex(Point):
         self.name = name        # planning to use string to make reference
         super().__init__(z, y)
 
-
     def __repr__(self):
         return "vertex {} at z = {:.3f}, y = {:.3f}".format(self.name, self.z, self.y)
     
     def __str__(self):
         return "vertex {} at z = {:.3f}, y = {:.3f}".format(self.name, self.z, self.y)
-    
+
+class Segment(Line):
+
+    def __init__(self, name, pi, pj):
+        self.name = name        # planning to use string to make reference
+        super().__init__(pi, pj)
+        self.thickness = None
+        self.first_vertex = None
+        self.last_vertex = None
+        self.properties = {}
+
+    def __repr__(self):
+        return 'straight segment from {} to {}'.format(self.pi, self.pj)
+
+    def __str__(self):
+        return 'straight segment from {} to {}'.format(self.pi, self.pj)
+
 
 if __name__ == "__main__":
     pass
