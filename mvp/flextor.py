@@ -151,7 +151,7 @@ class Line(object):
     def bounding_box(self):
         zi, yi = self.pi.coord()
         zj, yj = self.pj.coord()
-        return((max(zi, zj),max(yi, yj),(min(zi, zj), min(yi, yj))))
+        return((max(zi, zj),max(yi, yj)),(min(zi, zj), min(yi, yj)))
 
 
 if __name__ == "__main__":
