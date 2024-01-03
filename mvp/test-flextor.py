@@ -373,6 +373,15 @@ class TestSegment(unittest.TestCase):
         self.assertIs(s.first_vertex, A)
         self.assertIs(s.last_vertex, B)
 
+    def testProperties(self):
+        s = Segment('A', Point(0.0, 0.0), Point(1.0, 1.0))
+        self.assertFalse(s.has_property('area'))
+        self.assertFalse(s.has_property('I1'))
+        self.assertFalse(s.has_property('I2'))
+        self.assertFalse(s.has_property('Iz'))
+        self.assertFalse(s.has_property('Iy'))
+        self.assertFalse(s.has_property('Izy'))
+        self.assertFalse(s.has_property('CG'))
 
 if __name__ == "__main__":
     unittest.main()
