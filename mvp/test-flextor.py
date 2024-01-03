@@ -287,6 +287,17 @@ class testLine(unittest.TestCase):
         self.assertAlmostEqual(zmin_, -7.5)
         self.assertAlmostEqual(ymax_, 0.23)
         self.assertAlmostEqual(ymin_, -1.1)
+    
+    def testIsInsideBbox(self):
+        l = Line(Point(3.0,2.0),Point(-1.0, -0.5))
+        self.assertTrue(l.is_inside_bbox(Point(0.0, 0.0)))
+        self.assertTrue(l.is_inside_bbox(Point(1.0, 1.0)))
+        self.assertTrue(l.is_inside_bbox(Point(3.0, 2.0)))
+        self.assertTrue(l.is_inside_bbox(Point(-1.0,-0.5)))
+        self.assertTrue(l.is_inside_bbox(Point(3.0, -0.5)))
+        self.assertFalse(l.is_inside_bbox(Point(3.01, 0.0)))
+        self.assertFalse(l.is_inside_bbox(Point(3.00, -0.51)))
+        self.assertFalse(l.is_inside_bbox(Point(3.0, 3.0)))
 
 
 if __name__ == "__main__":
