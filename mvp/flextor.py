@@ -225,7 +225,7 @@ class Segment(Line):
             self.properties['CG'] = Point(zcg, ycg)
             self.properties['Iz'] = Iz
             self.properties['Iy'] = Iy
-            self.properties['Iyz'] = Iyz
+            self.properties['Izy'] = Iyz
 
 class Cross_section(object):
 
