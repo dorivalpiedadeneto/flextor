@@ -189,10 +189,10 @@ class Segment(Line):
         self.properties = {}
 
     def __repr__(self):
-        return 'straight segment from {} to {}'.format(self.pi, self.pj)
+        return 'straight segment {} from {} to {}'.format(self.name, self.pi, self.pj)
 
     def __str__(self):
-        return 'straight segment from {} to {}'.format(self.pi, self.pj)
+        return 'straight segment {} from {} to {}'.format(self.name, self.pi, self.pj)
 
 
 if __name__ == "__main__":
