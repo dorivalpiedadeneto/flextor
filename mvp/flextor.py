@@ -194,6 +194,26 @@ class Segment(Line):
     def __str__(self):
         return 'straight segment {} from {} to {}'.format(self.name, self.pi, self.pj)
 
+    def has_property(self, name):
+        return name in self.properties
+
+    def get_property(self, name):
+        if name in self.properties:
+            return self.properties[name]
+        else:
+            return None
+    
+
+class Cross_section(object):
+
+    def __init__(self):
+        self.segments = {}      # dict of segment instances
+        self.vertices = {}      # dict of vertices instances
+        self.CG = None          # None or a point instance
+        self.D = None           # None or a point instance 
+        self.paa = None         # principal axes angle (None or float)
+        self.properties = {}    # dict for storing the results
+
 
 if __name__ == "__main__":
     pass
