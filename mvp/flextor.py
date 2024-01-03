@@ -202,7 +202,30 @@ class Segment(Line):
             return self.properties[name]
         else:
             return None
-    
+
+    def compute_properties(self):
+        if self.thickness:
+            t = self.thickness
+            l = self.length()
+            zi, yi = self.pi.coord()
+            zj, yj = self.pj.coord()
+            zcg = 0.5 * (zi + zj)
+            ycg = 0.5 * (yi + yj)
+            c, s = self.unit_tangent()
+            A = t * l
+            I1 = t * l ** 3 / 12.0
+            I2 = t ** 3 * l /12.0
+            # verify the bellow computations (axis are in inverted direction)
+            Iz = c * I1 - s * I2
+            Iy = s * I1 + c * I2
+            Iyz = 0.5 * (I1 + I2)
+            self.properties['area'] = A
+            self.properties['I1'] = I1
+            self.properties['I2'] = I2
+            self.properties['CG'] = Point(zcg, ycg)
+            self.properties['Iz'] = Iz
+            self.properties['Iy'] = Iy
+            self.properties['Iyz'] = Iyz
 
 class Cross_section(object):
 
