@@ -166,7 +166,19 @@ class Line(object):
         zmin = min(zi, zj) - tolerance; ymin = min(yi, yj) - tolerance
         return (zmin < z_ < zmax) and (ymin < y_ < ymax)
 
+class Vertex(Point):
 
+    def __init__(self, name, z, y):
+        self.name = name        # planning to use string to make reference
+        super().__init__(z, y)
+
+
+    def __repr__(self):
+        return "vertex {} at z = {:.3f}, y = {:.3f}".format(self.name, self.z, self.y)
+    
+    def __str__(self):
+        return "point {} at z = {:.3f}, y = {:.3f}".format(self.name, self.z, self.y)
+    
 
 if __name__ == "__main__":
     pass
