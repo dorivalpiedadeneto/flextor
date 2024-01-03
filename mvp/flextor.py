@@ -158,6 +158,15 @@ class Line(object):
         zj, yj = self.pj.coord()
         return((max(zi, zj),max(yi, yj)),(min(zi, zj), min(yi, yj)))
 
+    def is_inside_bbox(self, point, tolerance = Point.tolerance):
+        z_, y_ = point.coord()
+        zi, yi = self.pi.coord()
+        zj, yj = self.pj.coord()
+        zmax = max(zi, zj) + tolerance; ymax = max(yi, yj) + tolerance
+        zmin = min(zi, zj) - tolerance; ymin = min(yi, yj) - tolerance
+        return (zmin < z_ < zmax) and (ymin < y_ < ymax)
+
+
 
 if __name__ == "__main__":
     pass
