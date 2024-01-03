@@ -2,6 +2,7 @@ import unittest
 
 from flextor import Point
 from flextor import Line
+from flextor import Vertex
 
 class TestPoint(unittest.TestCase):
 
@@ -298,6 +299,30 @@ class testLine(unittest.TestCase):
         self.assertFalse(l.is_inside_bbox(Point(3.01, 0.0)))
         self.assertFalse(l.is_inside_bbox(Point(3.00, -0.51)))
         self.assertFalse(l.is_inside_bbox(Point(3.0, 3.0)))
+
+
+class TestVertex(unittest.TestCase):
+
+    def testConstructor(self):
+        vts = (('a',(0.0, 0.0)), ('12',(1.0, 1.0)),
+               ('ii',(1.0, -1.0)), ('ca',(-1.0, 1.0)))
+        for vt in vts:
+            nm, (z, y) = vt
+            v = Vertex(nm, z, y)
+            self.assertIsInstance(v, Vertex)
+            self.assertIsInstance(v, Point)
+            self.assertEqual(nm, v.name)
+            self.assertAlmostEqual(z, v.z)
+            self.assertAlmostEqual(y, v.y)
+    
+    def testString(self):
+        _str = "vertex {} at z = {:.3f}, y = {:.3f}"
+        vts = (('a',(0.0, 0.0)), ('12',(1.0, 1.0)),
+               ('ii',(1.0, -1.0)), ('ca',(-1.0, 1.0)))
+        for vt in vts:
+            nm, (z, y) = vt
+            v = Vertex(nm, z, y)
+            self.assertEqual(_str.format(nm, z, y), str(v))
 
 
 if __name__ == "__main__":
