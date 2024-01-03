@@ -251,6 +251,23 @@ class testLine(unittest.TestCase):
             qsi_ += 0.1
             z_ += 0.1
             y_ -= 0.1
+    
+    def testDistance(self):
+        l = Line(Point(1.0, 1.0), Point(2.0, 1.0))
+        self.assertAlmostEqual(l.distance(Point(0.0, 0.0)), 2.0**0.5)
+        self.assertAlmostEqual(l.distance(Point(0.5, 0.5)), 0.5*2.0**0.5)
+        self.assertAlmostEqual(l.distance(Point(0.5, 1.0)), 0.5)
+        self.assertAlmostEqual(l.distance(Point(0.5, 1.5)), 0.5*2.0**0.5)
+        self.assertAlmostEqual(l.distance(Point(1.0, 0.5)), 0.5)
+        self.assertAlmostEqual(l.distance(Point(1.0, 1.5)), 0.5)
+        self.assertAlmostEqual(l.distance(Point(1.0, 1.0)), 0.0)
+        self.assertAlmostEqual(l.distance(Point(2.0, 0.5)), 0.5)
+        self.assertAlmostEqual(l.distance(Point(2.0, 1.0)), 0.0)
+        l = Line(Point(-1.0, 0.0), Point(0.0, -1.0))
+        self.assertAlmostEqual(l.distance(Point(0.0, 0.0)), 0.5*2.0**0.5)
+        self.assertAlmostEqual(l.distance(Point(-1.0, -1.0)), 0.5*2.0**0.5)
+        self.assertAlmostEqual(l.distance(Point(-0.5, -0.5)), 0.0)  
+
 
 if __name__ == "__main__":
     unittest.main()
