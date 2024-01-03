@@ -221,13 +221,36 @@ class testLine(unittest.TestCase):
             p.move(0.1, 0.0)
             qsi += 0.1
 
-
-            
-
-
-
-
-    
+    def testCoordinate(self):
+        l = Line(Point(-1.0,0.0), Point(1.0,0.0))
+        z_ = -1.0; y_ = 0.0; qsi_ = -1.0
+        for _ in range(21):
+            z, y = l.coordinate(qsi_)
+            self.assertAlmostEqual(z, z_)
+            self.assertAlmostEqual(y, y_)
+            qsi_ += 0.1
+            z_ += 0.1
+            y_ += 0.0
+        l.pi.move(10.0, 1.0)
+        l.pj.move(10.0,-1.0)
+        z_ = 9.0; y_ = 1.0; qsi_ = -1.0
+        for _ in range(21):
+            z, y = l.coordinate(qsi_)
+            self.assertAlmostEqual(z, z_)
+            self.assertAlmostEqual(y, y_)
+            qsi_ += 0.1
+            z_ += 0.1
+            y_ -= 0.1
+        l.pi.move(-20.0,-2.0)
+        l.pj.move(-20.0,-2.0)
+        z_ =-11.0; y_ = -1.0; qsi_ = -1.0
+        for _ in range(21):
+            z, y = l.coordinate(qsi_)
+            self.assertAlmostEqual(z, z_)
+            self.assertAlmostEqual(y, y_)
+            qsi_ += 0.1
+            z_ += 0.1
+            y_ -= 0.1
 
 if __name__ == "__main__":
     unittest.main()
