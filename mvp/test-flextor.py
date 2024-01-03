@@ -268,6 +268,26 @@ class testLine(unittest.TestCase):
         self.assertAlmostEqual(l.distance(Point(-1.0, -1.0)), 0.5*2.0**0.5)
         self.assertAlmostEqual(l.distance(Point(-0.5, -0.5)), 0.0)  
 
+    def testBoundingBox(self):
+        l = Line(Point(1.0, 0.0), Point(0.0, 0.0))
+        ((zmax_, ymax_),(zmin_, ymin_)) = l.bounding_box()
+        self.assertAlmostEqual(zmax_, 1.0)
+        self.assertAlmostEqual(zmin_, 0.0)
+        self.assertAlmostEqual(ymax_, 0.0)
+        self.assertAlmostEqual(ymin_, 0.0)
+        l = Line(Point(-1.0, 0.0), Point(-3.5, -0.1))
+        ((zmax_, ymax_),(zmin_, ymin_)) = l.bounding_box()
+        self.assertAlmostEqual(zmax_, -1.0)
+        self.assertAlmostEqual(zmin_, -3.5)
+        self.assertAlmostEqual(ymax_, 0.0)
+        self.assertAlmostEqual(ymin_, -0.1)
+        l = Line(Point(1.0, 0.23), Point(-7.5, -1.1))
+        ((zmax_, ymax_),(zmin_, ymin_)) = l.bounding_box()
+        self.assertAlmostEqual(zmax_, 1.0)
+        self.assertAlmostEqual(zmin_, -7.5)
+        self.assertAlmostEqual(ymax_, 0.23)
+        self.assertAlmostEqual(ymin_, -1.1)
+
 
 if __name__ == "__main__":
     unittest.main()
