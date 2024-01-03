@@ -3,6 +3,7 @@ import unittest
 from flextor import Point
 from flextor import Line
 from flextor import Vertex
+from flextor import Segment
 
 class TestPoint(unittest.TestCase):
 
@@ -323,6 +324,54 @@ class TestVertex(unittest.TestCase):
             nm, (z, y) = vt
             v = Vertex(nm, z, y)
             self.assertEqual(_str.format(nm, z, y), str(v))
+
+class TestSegment(unittest.TestCase):
+
+    def testConstructor(self):
+        lns = (('a',(0.0, 0.0), (1.0, 1.0)),
+               ('3',(1.0, 1.0), (1.0, -1.0)),
+               ('II',(1.0, -1.0), (-1.0, 1.0)),
+               ('iv',(-1.0, 1.0), (0.0, 0.0)))
+        for l in lns:
+            nm, (zi, yi), (zj, yj) = l
+            s = Segment(nm, Point(zi, yi), Point(zj, yj))
+            self.assertIsInstance(s, Segment)
+            self.assertIsInstance(s, Line)
+            self.assertIsInstance(s.pi, Point)
+            self.assertIsInstance(s.pj, Point)
+
+    def testString(self):
+        _str = "straight segment {} from {} to {}"
+        lns = (('a',(0.0, 0.0), (1.0, 1.0)),
+               ('3',(1.0, 1.0), (1.0, -1.0)),
+               ('II',(1.0, -1.0), (-1.0, 1.0)),
+               ('iv',(-1.0, 1.0), (0.0, 0.0)))
+        for l in lns:
+            nm, (zi, yi), (zj, yj) = l
+            s = Segment(nm, Point(zi, yi), Point(zj, yj))
+            self.assertEqual(_str.format(nm, Point(zi, yi), Point(zj, yj)), str(s))
+
+    def testThickness(self):
+        s = Segment('A', Point(0.0, 0.0), Point(1.0, 1.0))
+        self.assertIsNone(s.thickness)
+        s.thickness = 1.0
+        self.assertIsInstance(s.thickness, float)
+        self.assertAlmostEqual(s.thickness, 1.0)
+        s.thickness = None
+        self.assertIsNone(s.thickness)
+
+    def testVertices(self):
+        s = Segment('A', Point(0.0, 0.0), Point(1.0, 1.0))
+        self.assertIsNone(s.first_vertex)
+        self.assertIsNone(s.last_vertex)
+        A = Vertex('A', 0.0, 0.0)
+        B = Vertex('B', 1.0, 1.0)
+        s.first_vertex = A
+        s.last_vertex = B
+        self.assertIsInstance(s.first_vertex, Vertex)
+        self.assertIsInstance(s.last_vertex, Vertex)
+        self.assertIs(s.first_vertex, A)
+        self.assertIs(s.last_vertex, B)
 
 
 if __name__ == "__main__":
