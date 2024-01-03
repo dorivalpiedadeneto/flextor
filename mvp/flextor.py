@@ -139,9 +139,9 @@ class Line(object):
         '''
         qsi = self.projection(other_point)
         if qsi < -1.0:
-            z, y = self.pi().coord()
+            z, y = self.pi.coord()
         elif qsi > 1.0:
-            z, y = self.pj().coord()
+            z, y = self.pj.coord()
         else:
             z, y = self.coordinate(qsi)
         zp, yp = other_point.coord()
