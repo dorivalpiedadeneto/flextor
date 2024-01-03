@@ -177,7 +177,7 @@ class Vertex(Point):
         return "vertex {} at z = {:.3f}, y = {:.3f}".format(self.name, self.z, self.y)
     
     def __str__(self):
-        return "point {} at z = {:.3f}, y = {:.3f}".format(self.name, self.z, self.y)
+        return "vertex {} at z = {:.3f}, y = {:.3f}".format(self.name, self.z, self.y)
     
 
 if __name__ == "__main__":
