@@ -149,6 +149,11 @@ class Line(object):
         return d
 
     def bounding_box(self):
+        '''
+        The bounding box (tuple of two tuples) return the bottom left and the
+        top right coordinate of the line's bounding box (z horizontal, from 
+        right to left, and y vertical, from top to bottom).
+        '''
         zi, yi = self.pi.coord()
         zj, yj = self.pj.coord()
         return((max(zi, zj),max(yi, yj)),(min(zi, zj), min(yi, yj)))
