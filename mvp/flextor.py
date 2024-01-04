@@ -211,17 +211,17 @@ class Segment(Line):
             zj, yj = self.pj.coord()
             zcg = 0.5 * (zi + zj)
             ycg = 0.5 * (yi + yj)
-            c, s = self.unit_tangent()
             A = t * l
-            I1 = t * l ** 3 / 12.0
-            I2 = t ** 3 * l /12.0
-            # verify the bellow computations (axis are in inverted direction)
-            Iz = c * I1 - s * I2
-            Iy = s * I1 + c * I2
-            Iyz = 0.5 * (I1 + I2)
+            Izl = t * l ** 3 / 12.0     # local z axes
+            Iyl = t ** 3 * l /12.0      # local y axes
+            s, c = self.unit_tangent()
+            # Remember that Izyl = 0
+            Iz = c**2 * Izl + s**2 * Iyl # - 2.0 * Izyl * c * s 
+            Iy = s**2 * Izl + c**2 * Iyl # + 2.0 * Izyl * c * s 
+            Iyz = 0.5 * (Izl - Iyl) * c * s # + Izyl * (c**2 - s**2)
             self.properties['area'] = A
-            self.properties['I1'] = I1
-            self.properties['I2'] = I2
+            self.properties['Izl'] = Izl
+            self.properties['Iyl'] = Iyl
             self.properties['CG'] = Point(zcg, ycg)
             self.properties['Iz'] = Iz
             self.properties['Iy'] = Iy
