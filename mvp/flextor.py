@@ -218,14 +218,14 @@ class Segment(Line):
             # Remember that Izyl = 0
             Iz = c**2 * Izl + s**2 * Iyl # - 2.0 * Izyl * c * s 
             Iy = s**2 * Izl + c**2 * Iyl # + 2.0 * Izyl * c * s 
-            Iyz = (Izl - Iyl) * c * s # + Izyl * (c**2 - s**2)
+            Izy = (Izl - Iyl) * c * s # + Izyl * (c**2 - s**2)
             self.properties['area'] = A
             self.properties['Izl'] = Izl
             self.properties['Iyl'] = Iyl
             self.properties['CG'] = Point(zcg, ycg)
             self.properties['Iz'] = Iz
             self.properties['Iy'] = Iy
-            self.properties['Izy'] = Iyz
+            self.properties['Izy'] = Izy
 
 class Cross_section(object):
 
