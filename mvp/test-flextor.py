@@ -477,6 +477,51 @@ class TestSegment(unittest.TestCase):
                 self.assertAlmostEqual(s.get_property('Izy'), Izy)
                 self.assertEqual(s.get_property('CG'), ctr)
 
+    def testDataMethods(self):
+        pi = Point(0.0, 0.0); pj = Point(1.0, -3.0)
+        s = Segment(name='first_name',pi=pi, pj=pj)
+        s.thickness = 1.0
+        fv = Vertex('A', 0.0, 0.0); lv = Vertex('B', 1.0, -3.0)
+        s.first_vertex = fv
+        s.last_vertex = lv
+        d = s.data
+        self.assertEqual(d['name'],'first_name')
+        self.assertEqual(d['pi'],pi)
+        self.assertEqual(d['pj'],pj)
+        self.assertEqual(d['thickness'],1.0)
+        self.assertEqual(d['first_vertex'],fv)
+        self.assertEqual(d['last_vertex'],lv)
+        self.assertEqual(d['properties'],{})
+        s.compute_properties()
+        ppts = s.data['properties']
+        self.assertEqual(len(ppts),7)
+        new_data = {}
+        new_data['name'] = 'second_name'
+        new_data['pi'] = Point(0.0, 0.0)
+        new_data['pj'] = Point(0.0, 12.0)
+        new_data['thickness'] = 0.1
+        new_data['first_vertex'] = Vertex('C', 0.0, 12.0)
+        new_data['last_vertex'] = Vertex('D', 0.0, 0.0)
+        new_properties = {}
+        new_properties['area'] = 1.2
+        new_properties['Izl'] = 14.4
+        new_properties['Iyl'] = 0.001
+        new_properties['CG'] = Point(0.0, 6.0)
+        new_properties['Iz'] = 14.4
+        new_properties['Iy'] = 0.001
+        new_properties['Izy'] = 0.0
+        new_data['properties'] = new_properties
+        s.data = new_data
+        d = s.data
+        self.assertEqual(d['name'],'second_name')
+        self.assertEqual(d['pi'],new_data['pi'])
+        self.assertEqual(d['pj'],new_data['pj'])
+        self.assertEqual(d['thickness'],new_data['thickness'])
+        self.assertEqual(d['first_vertex'],new_data['first_vertex'])
+        self.assertEqual(d['last_vertex'],new_data['last_vertex'])
+        self.assertEqual(d['properties'],new_properties)
+
+
 
 if __name__ == "__main__":
     unittest.main()

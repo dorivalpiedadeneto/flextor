@@ -216,6 +216,22 @@ class Segment(Line):
         self.last_vertex = None
         self.properties = {}
 
+    @property
+    def data(self):
+        return {'name': self.name, 'pi': self.pi, 'pj': self.pj,
+                'first_vertex': self.first_vertex, 'last_vertex': self.last_vertex,
+                'thickness': self.thickness, 'properties': self.properties}
+
+    @data.setter
+    def data(self, value):
+        self.name = value['name']
+        self.pi = value['pi']
+        self.pj = value['pj']
+        self.first_vertex = value['first_vertex']
+        self.last_vertex = value['last_vertex']
+        self.thickness = value['thickness']
+        self.properties = value['properties']
+
     def __repr__(self):
         return 'straight segment {} from {} to {}'.format(self.name, self.pi, self.pj)
 
