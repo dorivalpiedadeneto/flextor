@@ -204,7 +204,7 @@ class Vertex(Point):
     def data(self, value):
         self.name = value['name']
         self.z = value['z']
-        self.y = value['z']
+        self.y = value['y']
 
 class Segment(Line):
 
