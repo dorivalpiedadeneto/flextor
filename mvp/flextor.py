@@ -25,6 +25,15 @@ class Point(object):
 
         return test_z and test_y
 
+    @property
+    def data(self):
+        return {'z': self.z, 'y': self.y}
+    
+    @data.setter
+    def data(self, value):
+        self.z = value['z']
+        self.y = value['y']
+
     def coord(self):
         return self.z, self.y
 
@@ -230,7 +239,7 @@ class Segment(Line):
 class Cross_section(object):
 
     def __init__(self):
-        self.segments = {}      # dict of segment instances
+        self.segments = []      # list of segment instances
         self.vertices = {}      # dict of vertices instances
         self.CG = None          # None or a point instance
         self.D = None           # None or a point instance 
