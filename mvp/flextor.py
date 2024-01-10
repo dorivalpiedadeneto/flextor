@@ -196,6 +196,16 @@ class Vertex(Point):
     def __str__(self):
         return "vertex {} at z = {:.3f}, y = {:.3f}".format(self.name, self.z, self.y)
 
+    @property
+    def data(self):
+        return {'name': self.name, 'z': self.z, 'y': self.y}
+
+    @data.setter
+    def data(self, value):
+        self.name = value['name']
+        self.z = value['z']
+        self.y = value['z']
+
 class Segment(Line):
 
     def __init__(self, name, pi, pj):
