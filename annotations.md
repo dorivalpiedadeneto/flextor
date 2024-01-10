@@ -25,7 +25,7 @@
  - Input by GUI: the coordinates may be given by click or coordinates input, with thickness value;
  - Input by dxf: user needs to inform a thickness for each layer (import by layer), or for all lines in file.
  - To select a line in GUI, user can use click or a selection box; after selected, the could be deleted, or change.
- - As there is no reference to the line id, maybe they can be stored in lists instead of dictionaries in the cross section instabce,
+ - As there is no reference to the line id, maybe they can be stored in lists instead of dictionaries in the cross section instance,
  - Considering these cases, there is no need to inform names in the input file.
  - Output file: json; maybe it is a good idea to export the segments names and vertices, as well as the results. The software version either.
  - Next methods to be implemented: read from input files, export to output files.
