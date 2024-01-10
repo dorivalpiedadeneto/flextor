@@ -307,6 +307,16 @@ class testLine(unittest.TestCase):
         self.assertFalse(l.is_inside_bbox(Point(3.00, -0.51)))
         self.assertFalse(l.is_inside_bbox(Point(3.0, 3.0)))
 
+    def testDataMethods(self):
+        pi = Point(0.0, 0.0); pj = Point(1.0, -1.0)
+        l = Line(pi, pj)
+        self.assertEqual(l.data, {'pi': pi.data, 'pj': pj.data})
+        pi_data = {'z': -1.0, 'y': 2.0}
+        pj_data = {'z': -0.1, 'y': 3.2}
+        l.pi.data = pi_data
+        l.pj.data = pj_data
+        self.assertEqual(l.data, {'pi':pi_data, 'pj': pj_data})
+
 
 class TestVertex(unittest.TestCase):
 

@@ -73,6 +73,15 @@ class Line(object):
     def __str__(self):
         return 'line from {} to {}'.format(self.pi, self.pj)
 
+    @property
+    def data(self):
+        return {'pi': self.pi.data, 'pj': self.pj.data}
+
+    @data.setter
+    def data(self, value):
+        self.pi.data = value['pi']
+        self.pj.data = value['pj']
+
     def move(self, dz = 0.0, dy = 0.0):
         self.pi.move(dz, dy)
         self.pj.move(dz, dy)
