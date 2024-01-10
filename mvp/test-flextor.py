@@ -111,6 +111,12 @@ class TestPoint(unittest.TestCase):
                     ang += 10.0
                     p_.rotate(p, ang)
 
+    def testDataMethods(self):
+        p = Point(10.0, 2.0)
+        self.assertEqual(p.data, {'z': 10.0, 'y':2.0})
+        p.data = {'z': -11.3, 'y': -0.1}
+        self.assertEqual(p.data, {'z': -11.3, 'y': -0.1})
+
 class testLine(unittest.TestCase):
 
     def testConstructor(self):
