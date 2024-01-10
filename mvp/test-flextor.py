@@ -344,7 +344,7 @@ class TestVertex(unittest.TestCase):
     def testDataMethods(self):
         v = Vertex('first_name',0.0, -2.0)
         self.assertEqual(v.data, {'name': 'first_name', 'z': 0.0, 'y': -2.0})
-        v.name = 'second_name'; v.z = -1.2; v.y = 2.3
+        v.data = {'name':'second_name', 'z': -1.2, 'y': 2.3}
         self.assertEqual(v.data, {'name':'second_name', 'z':-1.2, 'y': 2.3})
 
 
