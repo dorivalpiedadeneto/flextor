@@ -219,17 +219,25 @@ class Segment(Line):
     @property
     def data(self):
         return {'name': self.name, 'pi': self.pi, 'pj': self.pj,
-                'first_vertex': self.first_vertex, 'last_vertex': self.last_vertex,
-                'thickness': self.thickness, 'properties': self.properties}
+                'thickness': self.thickness}
 
     @data.setter
     def data(self, value):
         self.name = value['name']
         self.pi = value['pi']
         self.pj = value['pj']
+        self.thickness = value['thickness']
+
+    @property
+    def results(self):
+        return {'first_vertex': self.first_vertex, 
+                'last_vertex': self.last_vertex,
+                'properties': self.properties}        
+
+    @results.setter
+    def results(self, value):
         self.first_vertex = value['first_vertex']
         self.last_vertex = value['last_vertex']
-        self.thickness = value['thickness']
         self.properties = value['properties']
 
     def __repr__(self):
