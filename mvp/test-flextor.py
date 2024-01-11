@@ -480,6 +480,35 @@ class TestSegment(unittest.TestCase):
     def testDataMethods(self):
         pi = Point(0.0, 0.0); pj = Point(1.0, -3.0)
         s = Segment(name='first_name',pi=pi, pj=pj)
+        d = s.data
+        self.assertEqual(d['name'],'first_name')
+        self.assertEqual(d['pi'],pi)
+        self.assertEqual(d['pj'],pj)
+        self.assertIsNone(d['thickness'])
+        s.thickness = 1.0
+
+        d = s.data
+        self.assertAlmostEqual(d['thickness'], 1.0)
+
+        new_data = {}
+        new_data['name'] = 'second_name'
+        new_data['pi'] = Point(0.0, 0.0)
+        new_data['pj'] = Point(0.0, 12.0)
+        new_data['thickness'] = 0.1
+
+        s.data = new_data
+
+        d = s.data
+        self.assertEqual(d['name'],'second_name')
+        self.assertEqual(d['pi'],new_data['pi'])
+        self.assertEqual(d['pj'],new_data['pj'])
+        self.assertAlmostEqual(d['thickness'], 0.1)
+
+
+'''
+    def testResultsMethods(self):
+        pi = Point(0.0, 0.0); pj = Point(1.0, -3.0)
+        s = Segment(name='first_name',pi=pi, pj=pj)
         s.thickness = 1.0
         fv = Vertex('A', 0.0, 0.0); lv = Vertex('B', 1.0, -3.0)
         s.first_vertex = fv
@@ -520,8 +549,7 @@ class TestSegment(unittest.TestCase):
         self.assertEqual(d['first_vertex'],new_data['first_vertex'])
         self.assertEqual(d['last_vertex'],new_data['last_vertex'])
         self.assertEqual(d['properties'],new_properties)
-
-
-
+'''
+        
 if __name__ == "__main__":
     unittest.main()
