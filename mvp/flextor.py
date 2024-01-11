@@ -302,7 +302,8 @@ class Cross_section(object):
         self.segments.append(segment)
 
     def remove_segment(self, segment):
-        self.segments.remove(segment)
+        if segment in self.segments:
+            self.segments.remove(segment)
 
     def create_segment(self, zi, yi, zj, yj, thickness = None):
         s = Segment(Point(zi, yi), Point(zj, yj))
