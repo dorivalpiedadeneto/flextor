@@ -4,6 +4,7 @@ from flextor import Point
 from flextor import Line
 from flextor import Vertex
 from flextor import Segment
+from flextor import Cross_section
 
 class TestPoint(unittest.TestCase):
 
@@ -542,6 +543,18 @@ class TestSegment(unittest.TestCase):
         self.assertEqual(rss['first_vertex'],new_rss['first_vertex'])
         self.assertEqual(rss['last_vertex'],new_rss['last_vertex'])
         self.assertEqual(rss['properties'],new_properties)
+
+
+class TestCrossSection(unittest.TestCase):
+
+    def testConstructor(self):
+        cs = Cross_section()
+        self.assertIsInstance(cs, Cross_section)
+        self.assertIsInstance(cs.segments, list)
+        self.assertIsInstance(cs.vertices, dict)
+        self.assertIsInstance(cs.results, dict)
+
         
+
 if __name__ == "__main__":
     unittest.main()
