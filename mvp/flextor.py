@@ -284,10 +284,19 @@ class Cross_section(object):
     def __init__(self):
         self.segments = []      # list of segment instances
         self.vertices = {}      # dict of vertices instances
-        self.CG = None          # None or a point instance
-        self.D = None           # None or a point instance 
-        self.paa = None         # principal axes angle (None or float)
-        self.properties = {}    # dict for storing the results
+        self.results = {}       # results to be stored
+        # Results to be stored
+        # CG - Geometric Center
+        # CT - Torsion Tenter
+        # PPA - Principal Axes Angle
+        # Iz - Moment of Inertia - z axis
+        # Iy - Moment of Inertia - y axis
+        # Iyz - Product of Inertia - z and y axes
+        # I1 - First Principal Moment of Inertia
+        # I2 - Second Principal Moment of Inertia
+        # It - Polar Moment of Inertia
+        # Iw - Sectorial Moment of Inertia
+        # ws - List os sectorial areas (for each segment)
 
 
 if __name__ == "__main__":
