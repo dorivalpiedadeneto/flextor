@@ -554,6 +554,31 @@ class TestCrossSection(unittest.TestCase):
         self.assertIsInstance(cs.vertices, dict)
         self.assertIsInstance(cs.results, dict)
 
+    def testInsertAndRemoveSegment(self):
+        cs = Cross_section()
+        self.assertEqual(len(cs.segments), 0)
+        s = Segment(Point(0.0, 0.0), Point(0.0, 6.0))
+        cs.insert_segment(s)
+        self.assertEqual(len(cs.segments), 1)
+        self.assertIs(cs.segments[0],s)
+        cs.remove_segment(s)
+        self.assertEqual(len(cs.segments), 0)
+
+    def testCreateSegment(self):
+        cs = Cross_section()
+        zi_ = 0.0; yi_ = 0.0
+        zj_ = 0.0; yj_ = 6.0
+        tks = 0.2
+        cs.create_segment(zi = zi_, yi = yi_, zj = zj_, yj = yj_,
+                           thickness = tks)
+        s = Segment(pi = Point(zi_, yi_), pj = Point(zj_, yj_), thickness=tks)
+        self.assertEqual(cs.segments[0].pi, s.pi)
+        self.assertEqual(cs.segments[0].pj, s.pj)
+        self.assertAlmostEqual(cs.segments[0].thickness, s.thickness)
+        self.assertNotEqual(cs.segments[0],s)
+        # Remove will not work because they are equal but not the same segment
+        cs.remove_segment(s)
+        self.assertEqual(len(cs.segments),1)
 
 
 if __name__ == "__main__":
