@@ -208,10 +208,10 @@ class Vertex(Point):
 
 class Segment(Line):
 
-    def __init__(self, name, pi, pj):
-        self.name = name        # planning to use string to make reference
+    def __init__(self, pi, pj, name = '', thickness = None):
+        self.name = name
         super().__init__(pi, pj)
-        self.thickness = None
+        self.thickness = thickness
         self.first_vertex = None
         self.last_vertex = None
         self.properties = {}
