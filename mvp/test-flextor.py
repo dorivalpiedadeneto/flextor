@@ -358,7 +358,7 @@ class TestSegment(unittest.TestCase):
                ('iv',(-1.0, 1.0), (0.0, 0.0)))
         for l in lns:
             nm, (zi, yi), (zj, yj) = l
-            s = Segment(nm, Point(zi, yi), Point(zj, yj))
+            s = Segment(name = nm, pi = Point(zi, yi), pj = Point(zj, yj))
             self.assertIsInstance(s, Segment)
             self.assertIsInstance(s, Line)
             self.assertIsInstance(s.pi, Point)
@@ -372,11 +372,11 @@ class TestSegment(unittest.TestCase):
                ('iv',(-1.0, 1.0), (0.0, 0.0)))
         for l in lns:
             nm, (zi, yi), (zj, yj) = l
-            s = Segment(nm, Point(zi, yi), Point(zj, yj))
+            s = Segment(name = nm, pi = Point(zi, yi), pj = Point(zj, yj))
             self.assertEqual(_str.format(nm, Point(zi, yi), Point(zj, yj)), str(s))
 
     def testThickness(self):
-        s = Segment('A', Point(0.0, 0.0), Point(1.0, 1.0))
+        s = Segment(name = 'A', pi = Point(0.0, 0.0), pj = Point(1.0, 1.0))
         self.assertIsNone(s.thickness)
         s.thickness = 1.0
         self.assertIsInstance(s.thickness, float)
@@ -385,7 +385,7 @@ class TestSegment(unittest.TestCase):
         self.assertIsNone(s.thickness)
 
     def testVertices(self):
-        s = Segment('A', Point(0.0, 0.0), Point(1.0, 1.0))
+        s = Segment(name = 'A', pi = Point(0.0, 0.0), pj = Point(1.0, 1.0))
         self.assertIsNone(s.first_vertex)
         self.assertIsNone(s.last_vertex)
         A = Vertex('A', 0.0, 0.0)
@@ -398,7 +398,7 @@ class TestSegment(unittest.TestCase):
         self.assertIs(s.last_vertex, B)
 
     def testProperties(self):
-        s = Segment('A', Point(0.0, 6.0), Point(0.0, -6.0))
+        s = Segment(name = 'A', pi = Point(0.0, 6.0), pj = Point(0.0, -6.0))
         s.thickness = 2.0
         self.assertFalse(s.has_property('area'))
         self.assertFalse(s.has_property('Izl'))
@@ -439,7 +439,7 @@ class TestSegment(unittest.TestCase):
         self.assertEqual(s.get_property('CG'), Point(0.0, 0.0))
 
     def testComputeProperties(self):
-        s = Segment('A', Point(0.0,6.0), Point(0.0, -6.0))
+        s = Segment(name = 'A', pi = Point(0.0,6.0), pj = Point(0.0, -6.0))
         s.thickness = 2.0
         ctr = Point(0.0, 0.0)
         # Rotating 45 degrees 8 times (theta = 0, 45, 90, 135, 180, 225, ...)
@@ -554,7 +554,7 @@ class TestCrossSection(unittest.TestCase):
         self.assertIsInstance(cs.vertices, dict)
         self.assertIsInstance(cs.results, dict)
 
-        
+
 
 if __name__ == "__main__":
     unittest.main()
