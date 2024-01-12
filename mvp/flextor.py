@@ -321,13 +321,13 @@ class Cross_section(object):
     def get_vertices_by_area(self, box, tolerance):
         vertices = []
         if isinstance(box[0], Point):
-            zi, yi = Point.coord()
+            zi, yi = box[0].coord()
         else: # implied it is a list or tuple (with two values)
             zi, yi = box[0]
         if isinstance(box[1], Point):
-            zj, yj = Point.coord()
+            zj, yj = box[1].coord()
         else: # implied it is a list or tuple (with two values)
-            zj, yj = box[0]
+            zj, yj = box[1]
         zmin = min(zi, zj) - tolerance
         zmax = max(zi, zj) + tolerance
         ymin = min(yi, yj) - tolerance
