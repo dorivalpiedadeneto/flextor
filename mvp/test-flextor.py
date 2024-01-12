@@ -580,6 +580,36 @@ class TestCrossSection(unittest.TestCase):
         cs.remove_segment(s)
         self.assertEqual(len(cs.segments),1)
 
+    def testGetVerticesByCoordinate(self):
+        cs = Cross_section()
+        cs.vertices['A'] = Vertex(name='A',z = 0.0, y = 0.0)
+        cs.vertices['B'] = Vertex(name='B',z = 1.0, y = 1.0)
+        cs.vertices['C'] = Vertex(name='C',z = 1.0, y = 1.0)
+        cs.vertices['D'] = Vertex(name='D',z = 1.0, y = -1.0)
+        vs = cs.get_vertices_by_coordinate(point = Point(0.0, 0.0),
+                                           distance = 0.01)
+        self.assertEqual(len(vs), 1)
+        self.assertIn(cs.vertices['A'],vs)
+        cs.vertices['A'].move(0.0,0.009)
+        vs = cs.get_vertices_by_coordinate(point = Point(0.0, 0.0),
+                                           distance = 0.01)
+        self.assertEqual(len(vs), 1)
+        self.assertIn(cs.vertices['A'],vs)
+        vs = cs.get_vertices_by_coordinate(point = Point(0.0, -0.02),
+                                           distance = 0.01)
+        self.assertEqual(len(vs), 0)
+        vs = cs.get_vertices_by_coordinate(point = Point(1.001, 1.001),
+                                           distance = 0.01)
+        self.assertEqual(len(vs), 2)
+        self.assertIn(cs.vertices['B'],vs)
+        self.assertIn(cs.vertices['C'],vs)
+        vs = cs.get_vertices_by_coordinate(point = Point(1.01, 1.01),
+                                           distance = 0.01)
+        self.assertEqual(len(vs),0)
+        vs = cs.get_vertices_by_coordinate(point = Point(1.001, -0.999),
+                                           distance = 0.01)
+        self.assertEqual(len(vs), 1)
+        self.assertIn(cs.vertices['D'],vs)
 
 if __name__ == "__main__":
     unittest.main()
