@@ -313,7 +313,7 @@ class Cross_section(object):
 
     def get_vertices_by_coordinate(self, point, distance):
         vertices = []
-        for vertex in self.vertices.items():
+        for vertex in self.vertices.values():
             if point.distance(vertex) <= distance:
                 vertices.append(vertex)
         return vertices
@@ -332,7 +332,7 @@ class Cross_section(object):
         zmax = max(zi, zj) + tolerance
         ymin = min(yi, yj) - tolerance
         ymax = max(yi, yj) + tolerance
-        for vertex in self.vertices.items():
+        for vertex in self.vertices.values():
             z, y = vertex.coord()
             if (zmin <= z <= zmax) and (ymin <= y <= ymax):
                 vertices.append(vertex)
