@@ -338,6 +338,12 @@ class Cross_section(object):
                 vertices.append(vertex)
         return vertices
 
+    def get_segments_by_coordinate(self, point, distance):
+        segments = []
+        for segment in self.segments:
+            if segment.distance(point) <= distance:
+                segments.append(segment)
+        return segments
 
 if __name__ == "__main__":
     pass
