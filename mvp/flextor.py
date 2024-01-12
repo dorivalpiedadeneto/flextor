@@ -311,6 +311,33 @@ class Cross_section(object):
             s.thickness = thickness
         self.segments.append(s)
 
+    def get_vertices_by_coordinate(self, point, distance):
+        vertices = []
+        for vertex in self.vertices.items():
+            if point.distance(vertex) <= distance:
+                vertices.append(vertex)
+        return vertices
+
+    def get_vertices_by_area(self, box, tolerance):
+        vertices = []
+        if isinstance(box[0], Point):
+            zi, yi = Point.coord()
+        else: # implied it is a list or tuple (with two values)
+            zi, yi = box[0]
+        if isinstance(box[1], Point):
+            zj, yj = Point.coord()
+        else: # implied it is a list or tuple (with two values)
+            zj, yj = box[0]
+        zmin = min(zi, zj) - tolerance
+        zmax = max(zi, zj) + tolerance
+        ymin = min(yi, yj) - tolerance
+        ymax = max(yi, yj) + tolerance
+        for vertex in self.vertices.items():
+            z, y = vertex.coord()
+            if (zmin <= z <= zmax) and (ymin <= y <= ymax):
+                vertices.append(vertex)
+        return vertices
+
 
 if __name__ == "__main__":
     pass
