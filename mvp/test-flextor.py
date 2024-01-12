@@ -663,5 +663,31 @@ class TestCrossSection(unittest.TestCase):
         vs = cs.get_vertices_by_area(box=((-0.1, 0.1),Point(0.0, -0.0)),tolerance=0.01)
         self.assertEqual(len(vs), 0)
 
+    def testGetSegmentsByCoordinate(self):
+        cs = Cross_section()
+        cs.create_segment(zi = 0.0, yi = 0.0, zj = 1.0, yj = 1.0, thickness = 0.1)
+        cs.create_segment(zi = 1.0, yi = -1.0, zj = 1.0, yj = 1.0, thickness = 0.1)
+        #cs.segments[0].name = 'A-B'
+        #cs.segments[1].name = 'C-B'
+        sgs = cs.get_segments_by_coordinate(Point(0.0,0.0),distance=0.01)
+        self.assertEqual(len(sgs),1)
+        self.assertIn(cs.segments[0],sgs)
+        for v in (0.1, 0.25, 0.5, 0.75, 0.99):
+            sgs = cs.get_segments_by_coordinate(Point(v,v),distance=0.01)
+            self.assertEqual(len(sgs),1)
+            self.assertIn(cs.segments[0],sgs)
+        sgs = cs.get_segments_by_coordinate(Point(1.0,1.0),distance=0.01)
+        self.assertEqual(len(sgs),2)
+        self.assertIn(cs.segments[0],sgs)
+        self.assertIn(cs.segments[1],sgs)
+        sgs = cs.get_segments_by_coordinate(Point(1.01,1.01),distance=0.01)
+        self.assertEqual(len(sgs),0)
+        for v in (0.9, 0.5, 0.0, -0.5, -1.0):
+            sgs = cs.get_segments_by_coordinate(Point(1.0,v),distance=0.01)
+            self.assertEqual(len(sgs),1)
+            self.assertIn(cs.segments[1],sgs)
+        sgs = cs.get_segments_by_coordinate(Point(1.0,-1.02),distance=0.01)
+        self.assertEqual(len(sgs),0)
+
 if __name__ == "__main__":
     unittest.main()
