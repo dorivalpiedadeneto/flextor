@@ -53,5 +53,10 @@
 
  - At least for the current implementation, the cross section is the one that will manage the other classes. I believe that it is better to let it deal it in the cross section class.
  - For segment: right to left - crossing selection - selects any object that either crosses the boundary or is inside it
- - For segment: left to right - crossing selection - select on objects that are completely within the box
+ - For segment: left to right - box selection - select on objects that are completely within the box
  - For inputing line (segments): probably the easiest way is to use a csv file! (just an idea)
+
+2024-01-15
+
+ - Cross selection demands finding line's intersection; so, write this methods first!
+ - The derived formulation is wrong (when determinant is negative); needs reviewing of intersection method in line. 
