@@ -345,5 +345,49 @@ class Cross_section(object):
                 segments.append(segment)
         return segments
 
+    def get_segments_by_area(self, box, tolerance):
+        segments = []
+        if isinstance(box[0], Point):
+            zi, yi = box[0].coord()
+        else: # implied it is a list or tuple (with two values)
+            zi, yi = box[0]
+        if isinstance(box[1], Point):
+            zj, yj = box[1].coord()
+        else: # implied it is a list or tuple (with two values)
+            zj, yj = box[1]
+        zmin = min(zi, zj) - tolerance
+        zmax = max(zi, zj) + tolerance
+        ymin = min(yi, yj) - tolerance
+        ymax = max(yi, yj) + tolerance
+        # right to left - crossing selection - selects any object that either
+        # crosses the boundary or is inside it
+        # left to right - box selection - select on objects that are completely
+        # within the box
+        if zi < zj: # Cross selection
+            for segment in self.segments:
+                zsi, ysi = segment.pi.coord()
+                zsj, ysj = segment.pj.coord()
+                # If is totally inside, is selected (as in box selection)
+                if (zmin <= zsi <= zmax) and (ymin <= ysi <= ymax) and \
+                   (zmin <= zsj <= zmax) and (ymin <= ysj <= ymax):
+                    segments.append(segment)
+                else:
+                    pass
+                # Needs implementation of intersects in line class
+                #    zsmin = min(zsi, zsj)
+                #    zsmax = max(zsi, zsj)
+                #    ysmin = min(ysi, ysj)
+                #    ysmax = max(ysi, ysj)
+
+
+        else: # Box selection
+            for segment in self.segments:
+                zsi, ysi = segment.pi.coord()
+                zsj, ysj = segment.pj.coord()
+                if (zmin <= zsi <= zmax) and (ymin <= ysi <= ymax) and \
+                   (zmin <= zsj <= zmax) and (ymin <= ysj <= ymax):
+                    segments.append(segment)
+        return segments
+
 if __name__ == "__main__":
     pass
