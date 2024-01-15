@@ -184,6 +184,27 @@ class Line(object):
         zmin = min(zi, zj) - tolerance; ymin = min(yi, yj) - tolerance
         return (zmin < z_ < zmax) and (ymin < y_ < ymax)
 
+    def intersection(self, other_line, tolerance = 1.0e-6):
+        '''
+        Returns a tuple with the qsis of the intersection of the two lines
+        (qsi, qsi_), qsi -> from self, qsi_ -> other line, or None if
+        lines are collinear or parallel.
+        '''
+        zi, yi = self.pi.coord()
+        zj, yj = self.pj.coord()
+        zi_, yi_ = other_line.pi.coord()
+        zj_, yj_ = other_line.pj.coord()
+        A11 = 0.5 * (zj - zi); A12 = 0.5 * (zj_ - zi_)
+        A21 = 0.5 * (yj - yi); A22 = 0.5 * (yj_ - yi_)
+        det = A11 * A22 - A12 * A21
+        if abs(det) < tolerance:
+            return None
+        b1 = 0.5 * (zi_ + zj_) - 0.5 * (zi + zj)
+        b2 = 0.5 * (yi_ + yj_) - 0.5 * (yi + yj)
+        qsi = (A22 * b1 - A12 * b2) / det
+        qsi_ = (-A21 * b1 + A11 * b2) / det
+        return (qsi, qsi_)
+
 class Vertex(Point):
 
     def __init__(self, name, z, y):
