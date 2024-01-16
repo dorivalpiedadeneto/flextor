@@ -378,7 +378,7 @@ class Cross_section(object):
                 segments.append(segment)
         return segments
 
-    def get_segments_by_area(self, box, tolerance):
+    def get_segments_by_area(self, box, tolerance=1.0e-6):
         segments = []
         if isinstance(box[0], Point):
             zi, yi = box[0].coord()
@@ -411,9 +411,11 @@ class Cross_section(object):
                     lines.append(Line(Point(zmin, ymin), Point(zmin, ymax)))
                     lines.append(Line(Point(zmax, ymin), Point(zmax, ymax)))
                     for line in lines:
-                        if segment.intersection(line):
+                        if segment.intersects(line):
                             segments.append(segment)
-                            continue
+                            break
+
+
         else: # Box selection
             for segment in self.segments:
                 zsi, ysi = segment.pi.coord()
