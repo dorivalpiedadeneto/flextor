@@ -366,11 +366,15 @@ class testLine(unittest.TestCase):
         self.assertAlmostEqual(res[0], -1.5)
         self.assertAlmostEqual(res[1], 0.0)
         ol.move(dz = 0.0, dy = 0.5)
-        print(ol)
         res = l.intersection(ol)        
         self.assertIsInstance(res, tuple)
         self.assertAlmostEqual(res[0], -1.5)
         self.assertAlmostEqual(res[1], -0.5)        
+        ol = Line(Point(1.25, 1.5), Point(1.25, -0.5))
+        res = l.intersection(ol)        
+        self.assertIsInstance(res, tuple)
+        self.assertAlmostEqual(res[0], -1.5)
+        self.assertAlmostEqual(res[1], 0.5) 
 
 class TestVertex(unittest.TestCase):
 

@@ -194,8 +194,8 @@ class Line(object):
         zj, yj = self.pj.coord()
         zi_, yi_ = other_line.pi.coord()
         zj_, yj_ = other_line.pj.coord()
-        A11 = 0.5 * (zj - zi); A12 = 0.5 * (zj_ - zi_)
-        A21 = 0.5 * (yj - yi); A22 = 0.5 * (yj_ - yi_)
+        A11 = 0.5 * (zj - zi); A12 = 0.5 * (zi_ - zj_)
+        A21 = 0.5 * (yj - yi); A22 = 0.5 * (yi_ - yj_)
         det = A11 * A22 - A12 * A21
         if abs(det) < tolerance:
             return None
