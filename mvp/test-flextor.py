@@ -777,5 +777,37 @@ class TestCrossSection(unittest.TestCase):
         sgs = cs.get_segments_by_coordinate(Point(1.0,-1.02),distance=0.01)
         self.assertEqual(len(sgs),0)
 
+    def testGetSegmentsByArea(self):
+        cs = Cross_section()
+        cs.create_segment(zi = 0.0, yi = 0.0, zj = 1.0, yj = 1.0, thickness = 0.1)
+        cs.create_segment(zi = 1.0, yi = -1.0, zj = 1.0, yj = 1.0, thickness = 0.1)
+        # Box selection - Only the first one
+        sgs = cs.get_segments_by_area(box=((1.0, 1.0),(0.0, 0.0)))
+        self.assertEqual(len(sgs),1)
+        self.assertIn(cs.segments[0],sgs)
+        # box selection - No segment
+        sgs = cs.get_segments_by_area(box=((1.0, 1.0),(0.01, 0.0)))
+        self.assertEqual(len(sgs),0)
+        # Box selection - Only the second one
+        sgs = cs.get_segments_by_area(box=((1.01, -1.01),(0.99, 1.01)))
+        self.assertEqual(len(sgs),1)
+        self.assertIn(cs.segments[1],sgs)
+        # Cross selection - Only the first one
+        sgs = cs.get_segments_by_area(box=((0.0, 0.0),(0.1, 0.1)))
+        self.assertEqual(len(sgs),1)
+        self.assertIn(cs.segments[0],sgs)
+        sgs = cs.get_segments_by_area(box=((0.1, 0.1),(0.11, 1.11)))
+        self.assertEqual(len(sgs),1)
+        self.assertIn(cs.segments[0],sgs)
+        # Only the second one
+        sgs = cs.get_segments_by_area(box=((0.99, -0.1),(01.01, 0.1)))
+        self.assertEqual(len(sgs),1)
+        self.assertIn(cs.segments[1],sgs)
+        # Select both of them
+        sgs = cs.get_segments_by_area(box=((0.0, 0.0),(1.1, 1.1)))
+        self.assertEqual(len(sgs),2)
+        self.assertIn(cs.segments[0],sgs)
+        self.assertIn(cs.segments[1],sgs)
+
 if __name__ == "__main__":
     unittest.main()
