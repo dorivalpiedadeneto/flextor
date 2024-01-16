@@ -205,6 +205,18 @@ class Line(object):
         qsi_ = (-A21 * b1 + A11 * b2) / det
         return (qsi, qsi_)
 
+    def intersects(self, other_line, tolerance=1.0e-6):
+        res = self.intersection(other_line, tolerance)
+        if not res:
+            return False
+        qsi, qsi_ = res
+        inf = -1.0 - tolerance
+        sup = 1.0 + tolerance
+        if (inf < qsi < sup) and (inf < qsi_ < sup):
+            return True
+        else:
+            return False
+
 class Vertex(Point):
 
     def __init__(self, name, z, y):
