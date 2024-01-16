@@ -405,14 +405,15 @@ class Cross_section(object):
                    (zmin <= zsj <= zmax) and (ymin <= ysj <= ymax):
                     segments.append(segment)
                 else:
-                    pass
-                # Needs implementation of intersects in line class
-                #    zsmin = min(zsi, zsj)
-                #    zsmax = max(zsi, zsj)
-                #    ysmin = min(ysi, ysj)
-                #    ysmax = max(ysi, ysj)
-
-
+                    lines = []
+                    lines.append(Line(Point(zmin, ymin), Point(zmax, ymin)))
+                    lines.append(Line(Point(zmin, ymax), Point(zmax, ymax)))
+                    lines.append(Line(Point(zmin, ymin), Point(zmin, ymax)))
+                    lines.append(Line(Point(zmax, ymin), Point(zmax, ymax)))
+                    for line in lines:
+                        if segment.intersection(line):
+                            segments.append(segment)
+                            continue
         else: # Box selection
             for segment in self.segments:
                 zsi, ysi = segment.pi.coord()
