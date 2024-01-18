@@ -474,7 +474,7 @@ class Cross_section(object):
                 count += 1
             return '{} segments read from {}!'.format(filename)
         else:
-            return 'No segments could be retrived from {}'.format(filename)
+            return 'No segments could be read from {}'.format(filename)
 
 if __name__ == "__main__":
     pass
