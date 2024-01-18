@@ -1,6 +1,7 @@
 # Minimal class (no setters/getters, no typing, no tests, minimal comments...)
 
 from math import sin, cos, radians, sqrt
+from os import path
 
 class Point(object):
     '''
@@ -424,6 +425,56 @@ class Cross_section(object):
                    (zmin <= zsj <= zmax) and (ymin <= ysj <= ymax):
                     segments.append(segment)
         return segments
+
+    def read_from_csv(self, filename, eol = None, sep = None, dec = None):
+        # eol -> '\r\n': windows, '\n': linux
+        # sep -> ';' or ',' (spaces or tabs not valid)
+        # dec -> ',' or '.'
+        if path.isfile(filename):
+            try:
+                f = open(filename, 'r')
+                data = f.read()
+                f.close()
+            except:
+                return 'Error reading {} file!'.format(filename)
+        else:
+            return 'File not found! ({})'.format(filename)
+        if '\r\n' in data:
+            eol = '\r\n'
+        else:
+            eol = '\n'
+        if ';' in data:
+            sep = ';'
+            if ',' in data:
+                dec = ','
+            else:
+                dec = '.'
+        else:
+            sep = ','
+            dec = '.'
+        segs = []
+        for line in data.split('eol'):
+            values = line.split('sep')
+            if len(values) == 5 and values[0].replace('sep','0').isnumeric():
+                try:
+                    zi, yi, zj, yj, tks = values
+                    zi = float(zi); yi = float(yi)
+                    zj = float(zj); yj = float(yj)
+                    tks = float(tks)
+                    segs.append({'zi': zi, 'yi': yi, 'zj': zj, 'yj': yj,
+                                 'thickness': tks})
+                except:
+                    return 'Error reading one of the lines in {}!'.format(
+                           filename)
+        if segs:
+            count = 0
+            for seg in segs:
+                self.create_segment(seg['zi'], seg['yi'], seg['zj'], seg['yj'],
+                                    seg['thickness'])
+                count += 1
+            return '{} segments read from {}!'.format(filename)
+        else:
+            return 'No segments could be retrived from {}'.format(filename)
 
 if __name__ == "__main__":
     pass
