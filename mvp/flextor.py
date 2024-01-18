@@ -472,7 +472,7 @@ class Cross_section(object):
                 self.create_segment(seg['zi'], seg['yi'], seg['zj'], seg['yj'],
                                     seg['thickness'])
                 count += 1
-            return '{} segments read from {}!'.format(filename)
+            return '{} segments read from {}!'.format(count, filename)
         else:
             return 'No segments could be read from {}'.format(filename)
 
