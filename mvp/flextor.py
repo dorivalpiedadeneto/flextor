@@ -426,7 +426,7 @@ class Cross_section(object):
                     segments.append(segment)
         return segments
 
-    def read_from_csv(self, filename, eol = None, sep = None, dec = None):
+    def read_from_csv(self, filename):
         # eol -> '\r\n': windows, '\n': linux
         # sep -> ';' or ',' (spaces or tabs not valid)
         # dec -> ',' or '.'
@@ -446,35 +446,25 @@ class Cross_section(object):
         if ';' in data:
             sep = ';'
             if ',' in data:
-                dec = ','
-            else:
-                dec = '.'
+                data = data.replace(',','.')
         else:
             sep = ','
-            dec = '.'
-        segs = []
-        for line in data.split('eol'):
-            values = line.split('sep')
-            if len(values) == 5 and values[0].replace('sep','0').isnumeric():
+        count = 0
+        for line in data.split(eol):
+            values = line.split(sep)
+            if len(values) == 5:
                 try:
                     zi, yi, zj, yj, tks = values
-                    zi = float(zi); yi = float(yi)
-                    zj = float(zj); yj = float(yj)
+                    zi = float(zi)
+                    yi = float(yi)
+                    zj = float(zj)
+                    yj = float(yj)
                     tks = float(tks)
-                    segs.append({'zi': zi, 'yi': yi, 'zj': zj, 'yj': yj,
-                                 'thickness': tks})
+                    self.create_segment(zi, yi, zj, yj, tks)
+                    count += 1
                 except:
-                    return 'Error reading one of the lines in {}!'.format(
-                           filename)
-        if segs:
-            count = 0
-            for seg in segs:
-                self.create_segment(seg['zi'], seg['yi'], seg['zj'], seg['yj'],
-                                    seg['thickness'])
-                count += 1
-            return '{} segments read from {}!'.format(count, filename)
-        else:
-            return 'No segments could be read from {}'.format(filename)
+                    pass
+        return '{} segment(s) read from {}!'.format(count, filename)
 
 if __name__ == "__main__":
     pass
