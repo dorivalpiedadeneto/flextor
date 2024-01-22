@@ -219,6 +219,8 @@ class Line(object):
             return False
 
 class Vertex(Point):
+    _name_letters = 'ABCDEFGHIJKLMNOPQRTSUVWXYZ'
+    _nl = len(_name_letters)
 
     def __init__(self, name, z, y):
         self.name = name        # planning to use string to make reference
@@ -239,6 +241,17 @@ class Vertex(Point):
         self.name = value['name']
         self.z = value['z']
         self.y = value['y']
+
+    @classmethod
+    def __name_by_index__(cls, index):
+        if index // Vertex._nl:
+            name = Vertex._name_letters[(index // Vertex._nl)-1] + \
+            Vertex._name_letters[index % Vertex._nl]
+        else:
+            name = Vertex._name_letters[index % Vertex._nl]
+        return name
+
+
 
 class Segment(Line):
 
@@ -465,6 +478,14 @@ class Cross_section(object):
                 except:
                     pass
         return '{} segment(s) read from {}!'.format(count, filename)
+
+    # def define_vertices(self):
+        
+    #     vert_count = 0
+    #     for segment in self.segments:
+    #         pi = segment.pi
+    #         pj = segment.pj
+
 
 if __name__ == "__main__":
     pass
