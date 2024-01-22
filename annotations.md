@@ -59,4 +59,9 @@
 2024-01-15
 
  - Cross selection demands finding line's intersection; so, write this methods first!
- - The derived formulation is wrong (when determinant is negative); needs reviewing of intersection method in line. 
+ - The derived formulation is wrong (when determinant is negative); needs reviewing of intersection method in line.
+
+2024-01-22
+
+ - Implement method to identify the vertices
+ - First, define a class method in vertex to define a name (with uppercase letters) to the vertices (test it also)
