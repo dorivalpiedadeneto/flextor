@@ -436,6 +436,19 @@ class TestVertex(unittest.TestCase):
         v.data = {'name':'second_name', 'z': -1.2, 'y': 2.3}
         self.assertEqual(v.data, {'name':'second_name', 'z':-1.2, 'y': 2.3})
 
+    def testNameByIndex(self):
+        self.assertEqual(Vertex.__name_by_index__(0),'A')
+        self.assertEqual(Vertex.__name_by_index__(1),'B')
+        self.assertEqual(Vertex.__name_by_index__(2),'C')
+        self.assertEqual(Vertex.__name_by_index__(24),'Y')
+        self.assertEqual(Vertex.__name_by_index__(25),'Z')
+        self.assertEqual(Vertex.__name_by_index__(26),'AA')
+        self.assertEqual(Vertex.__name_by_index__(27),'AB')
+        self.assertEqual(Vertex.__name_by_index__(28),'AC')
+        self.assertEqual(Vertex.__name_by_index__(50),'AY')
+        self.assertEqual(Vertex.__name_by_index__(51),'AZ')
+        self.assertEqual(Vertex.__name_by_index__(52),'BA')
+
 
 class TestSegment(unittest.TestCase):
 
