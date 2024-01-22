@@ -251,8 +251,6 @@ class Vertex(Point):
             name = Vertex._name_letters[index % Vertex._nl]
         return name
 
-
-
 class Segment(Line):
 
     def __init__(self, pi, pj, name = '', thickness = None):
@@ -479,12 +477,48 @@ class Cross_section(object):
                     pass
         return '{} segment(s) read from {}!'.format(count, filename)
 
-    # def define_vertices(self):
-        
-    #     vert_count = 0
-    #     for segment in self.segments:
-    #         pi = segment.pi
-    #         pj = segment.pj
+    def define_vertices(self):       
+        vid = 0     # Vertex index
+        # Reset old data
+        self.vertices = {}
+        for segment in self.segments:
+            segment.name = ''
+            segment.first_vertex = None
+            segment.second_name = None
+        # Loop all segments
+        for segment in self.segments:
+            pi = segment.pi
+            pj = segment.pj
+            found_pi = False
+            found_pj = False
+            for vertex in self.vertices.values():
+                if pi == vertex:
+                    found_pi = True
+                if pj == vertex:
+                    found_pj = True
+            if not found_pi:
+                vname = Vertex.__name_by_index__(vid)
+                vid += 1
+                self.vertices[vname] = Vertex(name = vname, z = pi.z, y = pi.y)
+            if not found_pj:
+                vname = Vertex.__name_by_index__(vid)
+                vid += 1
+                self.vertices[vname] = Vertex(name = vname, z = pj.z, y = pj.y)
+        for vertex in self.vertices.values():
+            for segment in self.segments:
+                if not segment.first_vertex:
+                    if segment.pi == vertex:
+                        segment.first_vertex = vertex
+                    elif segment.pj == vertex:
+                        segment.first_vertex = vertex
+                elif not segment.last_vertex:
+                    if segment.pi == vertex:
+                        segment.last_vertex = vertex
+                    elif segment.pj == vertex:
+                        segment.last_vertex = vertex
+        for segment in self.segments:
+            segment.name = segment.first_vertex.name + '-' + \
+                           segment.last_vertex.name
 
 
 if __name__ == "__main__":
