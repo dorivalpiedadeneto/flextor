@@ -1,6 +1,6 @@
 # Minimal class (no setters/getters, no typing, no tests, minimal comments...)
 
-from math import sin, cos, radians, sqrt
+from math import sin, cos, radians, sqrt, atan2, degrees
 from os import path
 
 class Point(object):
@@ -311,6 +311,7 @@ class Segment(Line):
             A = t * l
             Izl = t * l ** 3 / 12.0     # local z axes
             Iyl = t ** 3 * l /12.0      # local y axes
+            It = l * t ** 3 / 3.0
             s, c = self.unit_tangent()
             # Remember that Izyl = 0
             Iz = c**2 * Izl + s**2 * Iyl # - 2.0 * Izyl * c * s 
@@ -323,6 +324,7 @@ class Segment(Line):
             self.properties['Iz'] = Iz
             self.properties['Iy'] = Iy
             self.properties['Izy'] = Izy
+            self.properties['It'] = It
 
 class Cross_section(object):
 
@@ -332,7 +334,7 @@ class Cross_section(object):
         self.results = {}       # results to be stored
         # Results to be stored
         # CG - Geometric Center
-        # CT - Torsion Tenter
+        # CT - Torsion Center
         # PPA - Principal Axes Angle
         # Iz - Moment of Inertia - z axis
         # Iy - Moment of Inertia - y axis
@@ -520,6 +522,43 @@ class Cross_section(object):
             segment.name = segment.first_vertex.name + '-' + \
                            segment.last_vertex.name
 
+    def compute_properties(self):
+        # A, Iz, Iy, Izy, I1, I2, It e principal axis angle
+        A = 0.0; Az = 0.0; Ay = 0.0
+        for segment in self.segments:
+            segment.compute_properties()
+            prop = segment.properties
+            area = prop['A']
+            zc, yc = prop['CG'].coord()
+            A += area
+            Az += area * zc
+            Ay += area * yc
+        zcg = Az / A
+        ycg = Ay / A
+        Iz = 0.0; Iy = 0.0; Izy = 0.0; It = 0.0
+        for segment in self.segments:
+            prop = segment.properties
+            area = prop['A']
+            zc, yc = prop['CG'].coord()
+            Iz += prop['Iz']
+            Iz += area * (yc - ycg) ** 2
+            Iy += prop['Iy']
+            Iy += area * (zc - zcg) ** 2
+            Izy += prop['Izy']
+            Izy += area * (yc - ycg) * (zc -zcg)
+            It += prop['It']
+        # I1, I2 and principal axis angle
+        I1 = 0.5 * (Iz + Iy) + sqrt(0.25 * (Iz - Iy) ** 2 + 0.25 * Izy ** 2)
+        I2 = 0.5 * (Iz + Iy) - sqrt(0.25 * (Iz - Iy) ** 2 + 0.25 * Izy ** 2)
+        paa = 0.5 * degrees(atan2(2.0*Izy,Iz - Iy))
+        self.results['A'] = A
+        self.results['Iz'] = Iz
+        self.results['Iy'] = Iy
+        self.results['Izy'] = Izy
+        self.results['It'] = It
+        self.results['I1'] = I1
+        self.results['I2'] = I2
+        self.results['PAA'] = paa
 
 if __name__ == "__main__":
     pass
