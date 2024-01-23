@@ -624,7 +624,7 @@ class TestSegment(unittest.TestCase):
 
         s.compute_properties()
         ppts = s.results['properties']
-        self.assertEqual(len(ppts),7)
+        self.assertEqual(len(ppts),8)
         new_rss = {}
 
         new_rss['first_vertex'] = Vertex('C', 0.0, 12.0)
@@ -943,6 +943,45 @@ class TestCrossSection(unittest.TestCase):
         self.assertEqual(cs.segments[4].name,'A-F')
         self.assertEqual(cs.segments[5].name,'B-G')
         self.assertEqual(cs.segments[6].name,'A-H')
+    
+    def testComputeProperties(self):
+        # First (simple) example
+        cs = Cross_section()
+        cs.create_segment(zi = 0.0, yi = -6.0, zj = 0.0, yj = 6.0, thickness= 1.0)
+        cs.define_vertices()
+        self.assertEqual(len(cs.vertices),2)
+        self.assertEqual(cs.vertices['A'],cs.segments[0].pi)
+        self.assertEqual(cs.vertices['B'],cs.segments[0].pj)
+        cs.compute_properties()
+        p = cs.results
+        self.assertAlmostEqual(p['A'],12.0)
+        self.assertAlmostEqual(p['Iz'],144.0)
+        self.assertAlmostEqual(p['Iy'],1.0)
+        self.assertAlmostEqual(p['Izy'],0.0)
+        self.assertAlmostEqual(p['I1'],144.0)
+        self.assertAlmostEqual(p['I2'],1.0)
+        self.assertAlmostEqual(p['It'],4.0)
+        zcg, ycg = p['CG']
+        self.assertAlmostEqual(zcg, 0.0)
+        self.assertAlmostEqual(ycg, 0.0)
+        self.assertAlmostEqual(p['PAA'], 0.0)
+        angle = 0.0
+        for _ in range(9):
+            angle += 10.0
+            cs.segments[0].rotate(Point(0.0, 0.0), 10.0, deg=True)
+            cs.compute_properties()
+            p = cs.results
+            self.assertAlmostEqual(p['A'],12.0)
+            # self.assertAlmostEqual(p['Iz'],144.0)
+            # self.assertAlmostEqual(p['Iy'],1.0)
+            # self.assertAlmostEqual(p['Izy'],0.0)
+            self.assertAlmostEqual(p['I1'],144.0)
+            self.assertAlmostEqual(p['I2'],1.0)
+            self.assertAlmostEqual(p['It'],4.0)        
+            zcg, ycg = p['CG']
+            self.assertAlmostEqual(zcg, 0.0)
+            self.assertAlmostEqual(ycg, 0.0)
+            self.assertAlmostEqual(p['PAA'], angle)
 
 if __name__ == "__main__":
     unittest.main()
