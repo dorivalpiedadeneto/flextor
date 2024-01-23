@@ -548,8 +548,8 @@ class Cross_section(object):
             Izy += area * (yc - ycg) * (zc -zcg)
             It += prop['It']
         # I1, I2 and principal axis angle
-        I1 = 0.5 * (Iz + Iy) + sqrt(0.25 * (Iz - Iy) ** 2 + 0.25 * Izy ** 2)
-        I2 = 0.5 * (Iz + Iy) - sqrt(0.25 * (Iz - Iy) ** 2 + 0.25 * Izy ** 2)
+        I1 = 0.5 * (Iz + Iy) + sqrt((0.5 * (Iz - Iy)) ** 2 + Izy ** 2)
+        I2 = 0.5 * (Iz + Iy) - sqrt((0.5 * (Iz - Iy)) ** 2 + Izy ** 2)
         paa = 0.5 * degrees(atan2(2.0*Izy,Iz - Iy))
         self.results['A'] = A
         self.results['Iz'] = Iz
@@ -558,6 +558,7 @@ class Cross_section(object):
         self.results['It'] = It
         self.results['I1'] = I1
         self.results['I2'] = I2
+        self.results['CG'] = (zcg, ycg)
         self.results['PAA'] = paa
 
 if __name__ == "__main__":
