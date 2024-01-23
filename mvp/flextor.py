@@ -528,7 +528,7 @@ class Cross_section(object):
         for segment in self.segments:
             segment.compute_properties()
             prop = segment.properties
-            area = prop['A']
+            area = prop['area']
             zc, yc = prop['CG'].coord()
             A += area
             Az += area * zc
@@ -538,7 +538,7 @@ class Cross_section(object):
         Iz = 0.0; Iy = 0.0; Izy = 0.0; It = 0.0
         for segment in self.segments:
             prop = segment.properties
-            area = prop['A']
+            area = prop['area']
             zc, yc = prop['CG'].coord()
             Iz += prop['Iz']
             Iz += area * (yc - ycg) ** 2
