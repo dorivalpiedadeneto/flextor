@@ -65,3 +65,9 @@
 
  - Implement method to identify the vertices
  - First, define a class method in vertex to define a name (with uppercase letters) to the vertices (test it also)
+  
+2024-01-25
+
+ - Implemented sectorial_area_contribution in vertex class (but not tested yet)
+ - Started implementing compute_sectorial_area_and_torsion_center in cross section class (not finished yet)
+ - Next step: Computing torsion center position
