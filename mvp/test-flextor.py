@@ -1019,7 +1019,25 @@ class TestCrossSection(unittest.TestCase):
             self.assertAlmostEqual(zcg, zcg_)
             self.assertAlmostEqual(ycg, ycg_)
             self.assertAlmostEqual(p['PAA'], 0.0)
-
+        ang = 0.0
+        dang = 10.0
+        for _ in range(9):
+            ang += dang
+            for segment in cs.segments:
+                segment.rotate(Point(zcg_, ycg_), dang)
+            cs.compute_properties()
+            p = cs.results
+            self.assertAlmostEqual(p['A'],1.2)
+            # self.assertAlmostEqual(p['Iz'],3.736)
+            # self.assertAlmostEqual(p['Iy'],0.267)
+            # self.assertAlmostEqual(p['Izy'],0.0)
+            self.assertAlmostEqual(p['I1'],3.736)
+            self.assertAlmostEqual(p['I2'],0.267)
+            self.assertAlmostEqual(p['It'],0.012)
+            zcg, ycg = p['CG']
+            self.assertAlmostEqual(zcg, zcg_)
+            self.assertAlmostEqual(ycg, ycg_)
+            self.assertAlmostEqual(p['PAA'], ang)
 
 if __name__ == "__main__":
     unittest.main()
