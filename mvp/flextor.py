@@ -326,6 +326,17 @@ class Segment(Line):
             self.properties['Izy'] = Izy
             self.properties['It'] = It
 
+    def sectorial_area_contribution(self, center):
+        # Positive in clockwise direction
+        if self.first_vertex and self.last_vertex:
+            zc, yc = center.coord()
+            zj, yj = self.first_vertex.coord()
+            zi, yi = self.last_vertex.coord()
+            w = zc * (yj - yi) + zj * (yi - yc) + zi * (yc - yj)
+        else:
+            w = None
+        return w
+
 class Cross_section(object):
 
     def __init__(self):
@@ -486,7 +497,7 @@ class Cross_section(object):
         for segment in self.segments:
             segment.name = ''
             segment.first_vertex = None
-            segment.second_name = None
+            segment.last_vertex = None
         # Loop all segments
         for segment in self.segments:
             pi = segment.pi
@@ -560,6 +571,57 @@ class Cross_section(object):
         self.results['I2'] = I2
         self.results['CG'] = (zcg, ycg)
         self.results['PAA'] = paa
+
+    def compute_sectorial_area_and_torsion_center(self):
+        # Provisory center and provisory sectorial area
+        if 'CG' in self.results.keys():
+            zp, yp = self.results['CG']
+        else:
+            return # Cannot continue
+        PC = Point(zp, yp)
+        if 'PAA' in self.results.keys():
+            ang = radians(self.results['PAA'])
+        else:
+            return # Cannot continue
+        # Sectorial areas (provisory)
+        ws = {'A': 0.0}
+        remaining_vertices = list(self.vertices.keys())
+        remaining_vertices.remove('A')
+        while len(remaining_vertices) > 0:
+            last_size = len(remaining_vertices)
+            for segment in self.segments:
+                fvname = segment.first_vertex.name
+                lvname = segment.last_vertex.name
+                if fvname in ws.keys():
+                    if not lvname in ws.keys():
+                        zi, yi = segment.first_vertex.coord()
+                        zj, yj = segment.last_vertex.coord()
+                        w = segment.sectorial_area_contribution(PC)
+                        ws[lvname] = ws[fvname] + w
+                        remaining_vertices.remove(lvname)
+            if len(remaining_vertices) == last_size:
+                print('Infinite loop while computing sectorial areas!')
+                return
+        print('Temporary areas')
+        print(ws)
+        # At this point, the provisory sectorial areas are already computed
+        vertices = {}   # coordinates in the principal axis coordinates
+        for vk in self.vertices.keys():
+            vertex = self.vertices[vk]
+            zv, yv = vertex.coord()
+            z_ = zv - zp
+            y_ = yv - yp
+            z = z_ * cos(ang) - y_ * sin(ang)
+            y = y_ * cos(ang) + z_ * sin(ang)
+            name = vertex.name
+            vertices[name] = {'z': z, 'y': y}
+        print('Principal axes coordinates')
+        print(vertices)
+
+            
+
+
+
 
 if __name__ == "__main__":
     pass

@@ -1038,6 +1038,7 @@ class TestCrossSection(unittest.TestCase):
             self.assertAlmostEqual(zcg, zcg_)
             self.assertAlmostEqual(ycg, ycg_)
             self.assertAlmostEqual(p['PAA'], ang)
+        cs.compute_sectorial_area_and_torsion_center()
 
 if __name__ == "__main__":
     unittest.main()
