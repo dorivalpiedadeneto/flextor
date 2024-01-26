@@ -129,7 +129,7 @@ class Line(object):
         ymp = yp - ym
         # unit tanget vector components
         tz, ty = self.unit_tangent()
-        # lenght from middle pointo to pj
+        # length from middle pointo to pj
         l = sqrt((zj - zm) ** 2 + (yj - ym) ** 2)
         qsi = (zmp * tz + ymp * ty) / l
         return qsi        
@@ -614,14 +614,80 @@ class Cross_section(object):
             z = z_ * cos(ang) - y_ * sin(ang)
             y = y_ * cos(ang) + z_ * sin(ang)
             name = vertex.name
-            vertices[name] = {'z': z, 'y': y}
+            vertices[name] = (z, y)
         print('Principal axes coordinates')
         print(vertices)
-
-            
-
-
-
+        # Compute the torsion center coordinate (CT)
+        zd_ = 0.0; yd_ = 0.0
+        for segment in self.segments:
+            t = segment.thickness
+            l = segment.length()
+            vi = segment.first_vertex.name
+            vj = segment.last_vertex.name
+            zi, yi = vertices[vi]
+            zj, yj = vertices[vj]
+            wi = ws[vi]; wj = ws[vj]
+            yd_ += t * l * (wi * (2.0 * zi + zj) + wj * (2.0 * zj + zi)) / 6.0
+            zd_ += t * l * (wi * (2.0 * yi + yj) + wj * (2.0 * yj + yi)) / 6.0
+        I1 = self.results['I1']
+        I2 = self.results['I2']
+        yd_ /= I2
+        zd_ /= I1
+        # Back to glbal axis (z and y)
+        yd = yd_ * cos(-ang) + zd_ * sin(-ang)
+        zd = zd_ * cos(-ang) - yd_ * sin(-ang)
+        yd += yp
+        zd += zp
+        print('CT = ({},{})'.format(zd, yd))
+        self.results['CT'] = (zd, yd)
+        # Computing principal sectorial area
+        CT = Point(zd, yd)
+        ws = {'A': 0.0}
+        remaining_vertices = list(self.vertices.keys())
+        remaining_vertices.remove('A')
+        while len(remaining_vertices) > 0:
+            last_size = len(remaining_vertices)
+            for segment in self.segments:
+                fvname = segment.first_vertex.name
+                lvname = segment.last_vertex.name
+                if fvname in ws.keys():
+                    if not lvname in ws.keys():
+                        zi, yi = segment.first_vertex.coord()
+                        zj, yj = segment.last_vertex.coord()
+                        w = segment.sectorial_area_contribution(CT)
+                        ws[lvname] = ws[fvname] + w
+                        remaining_vertices.remove(lvname)
+            if len(remaining_vertices) == last_size:
+                print('Infinite loop while computing sectorial areas!')
+                return
+        print('Principal Sectorial Area - intermediate step')
+        print(ws)
+        # Computing wc
+        wc = 0
+        for segment in self.segments:
+            t = segment.thickness
+            l = segment.length()
+            vi = segment.first_vertex.name
+            vj = segment.last_vertex.name
+            wi = ws[vi]; wj = ws[vj]
+            wc += t * l * (wi + wj) / 2.0
+        # Finally computing the principal sectorial area values
+        for k,v in ws.items():
+            v -= wc
+        print('Principal Sectorial Area - final value')
+        print(ws)
+        self.results['ws'] = ws
+        # Computing IW
+        Iw = 0.0
+        for segment in self.segments:
+            t = segment.thickness
+            l = segment.length()
+            vi = segment.first_vertex.name
+            vj = segment.last_vertex.name
+            wi = ws[vi]; wj = ws[vj]
+            Iw += l * t * (wi ** 2 + wi * wj + wj ** 2)
+        self.results['Iw'] = Iw
+        print('Iw = {}'.format(Iw))
 
 if __name__ == "__main__":
     pass

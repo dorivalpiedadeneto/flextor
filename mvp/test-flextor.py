@@ -969,6 +969,7 @@ class TestCrossSection(unittest.TestCase):
         for _ in range(9):
             angle += 10.0
             cs.segments[0].rotate(Point(0.0, 0.0), 10.0, deg=True)
+            cs.define_vertices()
             cs.compute_properties()
             p = cs.results
             self.assertAlmostEqual(p['A'],12.0)
@@ -1006,6 +1007,7 @@ class TestCrossSection(unittest.TestCase):
             for segment in cs.segments:
                 segment.move(dz,dy)
             zcg_ += dz; ycg_ += dy
+            cs.define_vertices()
             cs.compute_properties()
             p = cs.results
             self.assertAlmostEqual(p['A'],1.2)
@@ -1038,6 +1040,7 @@ class TestCrossSection(unittest.TestCase):
             self.assertAlmostEqual(zcg, zcg_)
             self.assertAlmostEqual(ycg, ycg_)
             self.assertAlmostEqual(p['PAA'], ang)
+        cs.compute_properties()
         cs.compute_sectorial_area_and_torsion_center()
 
 if __name__ == "__main__":
