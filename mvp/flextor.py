@@ -663,7 +663,7 @@ class Cross_section(object):
         print('Principal Sectorial Area - intermediate step')
         print(ws)
         # Computing wc
-        wc = 0
+        wc = 0.0
         for segment in self.segments:
             t = segment.thickness
             l = segment.length()
@@ -671,9 +671,11 @@ class Cross_section(object):
             vj = segment.last_vertex.name
             wi = ws[vi]; wj = ws[vj]
             wc += t * l * (wi + wj) / 2.0
+        wc /= self.results['A']
+        print('wc = {}'.format(wc))
         # Finally computing the principal sectorial area values
-        for k,v in ws.items():
-            v -= wc
+        for k in ws:
+            ws[k] -= wc
         print('Principal Sectorial Area - final value')
         print(ws)
         self.results['ws'] = ws
@@ -685,7 +687,7 @@ class Cross_section(object):
             vi = segment.first_vertex.name
             vj = segment.last_vertex.name
             wi = ws[vi]; wj = ws[vj]
-            Iw += l * t * (wi ** 2 + wi * wj + wj ** 2)
+            Iw += l * t * (wi ** 2 + wi * wj + wj ** 2) / 3.0
         self.results['Iw'] = Iw
         print('Iw = {}'.format(Iw))
 
