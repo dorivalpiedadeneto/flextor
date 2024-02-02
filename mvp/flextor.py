@@ -330,8 +330,8 @@ class Segment(Line):
         # Positive in clockwise direction
         if self.first_vertex and self.last_vertex:
             zc, yc = center.coord()
-            zj, yj = self.first_vertex.coord()
-            zi, yi = self.last_vertex.coord()
+            zi, yi = self.first_vertex.coord()
+            zj, yj = self.last_vertex.coord()
             w = zc * (yj - yi) + zj * (yi - yc) + zi * (yc - yj)
         else:
             w = None
@@ -600,10 +600,8 @@ class Cross_section(object):
                         ws[lvname] = ws[fvname] + w
                         remaining_vertices.remove(lvname)
             if len(remaining_vertices) == last_size:
-                print('Infinite loop while computing sectorial areas!')
+                #Infinite loop while computing sectorial areas!
                 return
-        print('Temporary areas')
-        print(ws)
         # At this point, the provisory sectorial areas are already computed
         vertices = {}   # coordinates in the principal axis coordinates
         for vk in self.vertices.keys():
@@ -615,8 +613,6 @@ class Cross_section(object):
             y = y_ * cos(ang) + z_ * sin(ang)
             name = vertex.name
             vertices[name] = (z, y)
-        print('Principal axes coordinates')
-        print(vertices)
         # Compute the torsion center coordinate (CT)
         zd_ = 0.0; yd_ = 0.0
         for segment in self.segments:
@@ -628,7 +624,7 @@ class Cross_section(object):
             zj, yj = vertices[vj]
             wi = ws[vi]; wj = ws[vj]
             yd_ += t * l * (wi * (2.0 * zi + zj) + wj * (2.0 * zj + zi)) / 6.0
-            zd_ += t * l * (wi * (2.0 * yi + yj) + wj * (2.0 * yj + yi)) / 6.0
+            zd_ -= t * l * (wi * (2.0 * yi + yj) + wj * (2.0 * yj + yi)) / 6.0
         I1 = self.results['I1']
         I2 = self.results['I2']
         yd_ /= I2
@@ -638,7 +634,6 @@ class Cross_section(object):
         zd = zd_ * cos(-ang) - yd_ * sin(-ang)
         yd += yp
         zd += zp
-        print('CT = ({},{})'.format(zd, yd))
         self.results['CT'] = (zd, yd)
         # Computing principal sectorial area
         CT = Point(zd, yd)
@@ -658,10 +653,8 @@ class Cross_section(object):
                         ws[lvname] = ws[fvname] + w
                         remaining_vertices.remove(lvname)
             if len(remaining_vertices) == last_size:
-                print('Infinite loop while computing sectorial areas!')
+                #Infinite loop while computing sectorial areas!
                 return
-        print('Principal Sectorial Area - intermediate step')
-        print(ws)
         # Computing wc
         wc = 0.0
         for segment in self.segments:
@@ -672,12 +665,9 @@ class Cross_section(object):
             wi = ws[vi]; wj = ws[vj]
             wc += t * l * (wi + wj) / 2.0
         wc /= self.results['A']
-        print('wc = {}'.format(wc))
         # Finally computing the principal sectorial area values
         for k in ws:
             ws[k] -= wc
-        print('Principal Sectorial Area - final value')
-        print(ws)
         self.results['ws'] = ws
         # Computing IW
         Iw = 0.0
@@ -689,7 +679,6 @@ class Cross_section(object):
             wi = ws[vi]; wj = ws[vj]
             Iw += l * t * (wi ** 2 + wi * wj + wj ** 2) / 3.0
         self.results['Iw'] = Iw
-        print('Iw = {}'.format(Iw))
 
 if __name__ == "__main__":
     pass
